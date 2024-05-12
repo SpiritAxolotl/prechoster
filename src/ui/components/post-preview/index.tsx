@@ -20,6 +20,7 @@ import {
 } from './basic-renderer';
 import { Button } from '../../../uikit/button';
 import { createPortal } from 'react-dom';
+import { DarkModeButton } from './dark-mode-button';
 
 const RESET_ON_RENDER = true;
 
@@ -178,7 +179,6 @@ export interface PreviewConfig {
     render: RenderConfig;
     cohostRenderer: boolean;
     prefersReducedMotion: boolean;
-    simulateUserstyles: boolean;
     darkMode: boolean;
 }
 
@@ -193,8 +193,7 @@ export const DEFAULT_PREVIEW_CONFIG: PreviewConfig = {
 
     cohostRenderer: true,
     prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-    simulateUserstyles: false,
-    darkMode: false
+    darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
 };
 
 export function PostPreview({
@@ -252,18 +251,21 @@ export function PostPreview({
     return (
         <div
             className={
-                'post-preview' +
-                (stale ? ' is-stale' : '') +
-                (config.simulateUserstyles ? ' simulate-userstyles' : '') +
-                (config.darkMode ? ' dark-mode' : '')
+                'post-preview' + (stale ? ' is-stale' : '') + (config.darkMode ? ' dark-mode' : '')
             }
         >
             <div className="post-header">
-                <RenderConfigEditor
-                    hasCohostRenderer={!!cohostRenderer}
-                    config={config}
-                    onConfigChange={onConfigChange}
-                />
+                <span className="i-settings-container">
+                    <RenderConfigEditor
+                        hasCohostRenderer={!!cohostRenderer}
+                        config={config}
+                        onConfigChange={onConfigChange}
+                    />
+                    <DarkModeButton
+                        isDark={config.darkMode}
+                        onClick={() => onConfigChange({ ...config, darkMode: !config.darkMode })}
+                    />
+                </span>
                 <span className="i-errors-container">
                     <button
                         ref={errorBtn}
@@ -370,6 +372,13 @@ const RENDER_CONFIG_ITEMS: { [k: string]: RenderConfigItem } = {
         description: `Uses the cohost markdown renderer (from ${COHOST_RENDERER_VERSION}). Turn this off to test with an approximate renderer that is less strict.`,
         requiresCohostRenderer: true,
     },
+    prefersReducedMotion: {
+        short: ['motion ✓', 'reduced motion'],
+        label: 'Reduced Motion',
+        description:
+            'Disables the `spin` animation and enables the `pulse` animation. This simulates the effect of @media (prefers-reduced-motion: reduce) on cohost.',
+        renderOnChange: true,
+    },
     hasCohostPlus: {
         short: null,
         label: 'Cohost Plus!',
@@ -385,25 +394,6 @@ const RENDER_CONFIG_ITEMS: { [k: string]: RenderConfigItem } = {
         inRender: true,
         requiresCohostRenderer: true,
     },
-    prefersReducedMotion: {
-        short: ['motion ✓', 'reduced motion'],
-        label: 'Reduced Motion',
-        description:
-            'Disables the `spin` animation and enables the `pulse` animation. This simulates the effect of @media (prefers-reduced-motion: reduce) on cohost.',
-        renderOnChange: true,
-    },
-    simulateUserstyles: {
-        short: [null, 'userstyles ✓'],
-        label: 'Simulate Userstyles',
-        description:
-            'Changes a bunch of colors to a dark theme, for testing the effects of some cohost userstyles.',
-    },
-    darkMode: {
-        short: [null, 'dark mode ✓'],
-        label: 'Dark Mode',
-        description:
-            'Switches over to cohost\'s dark mode colors.',
-    }
 };
 
 function RenderConfigEditor({

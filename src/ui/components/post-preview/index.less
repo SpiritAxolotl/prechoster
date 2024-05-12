@@ -6,10 +6,13 @@
     border-radius: 0.5rem;
     box-shadow: 0 4px 5px rgba(25, 25, 25, 0.14), 0 1px 10px rgba(25, 25, 25, 0.12),
         0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 1px;
     user-select: none;
+    transition: background 1s, color 1s;
 
     &.dark-mode {
-        box-shadow:  rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px, rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
+        margin: 0;
+        box-shadow: rgba(0, 0, 0, 0.14) 0 4px 5px 0, rgba(0, 0, 0, 0.12) 0 1px 10px 0, rgba(0, 0, 0, 0.2) 0 2px 4px 0;
         border: 1px solid rgb(74, 72, 71);
     }
 
@@ -18,6 +21,7 @@
         margin: 0 0.75rem;
         border: none;
         border-top: 1px solid rgb(191 186 181);
+        transition: border-color 1s, margin 1s;
     }
 
     &.dark-mode > hr {
@@ -34,6 +38,7 @@
         background: white;
         font-size: var(--font-size-content);
         border: 1px solid var(--tw-border-opacity);
+        transition: all 1s;
 
         .inner-prose {
             margin: 1rem 0;
@@ -67,6 +72,11 @@
     & > .post-header {
         .render-config {
             display: flex;
+        }
+
+        .i-settings-container {
+            display: flex;
+            gap: 0.5em;
         }
 
         .i-config-button,
@@ -107,6 +117,8 @@
                 background: #0002;
                 padding: 0.1em 0.2em;
                 border-radius: 0.3em;
+
+                transition: background 1s;
             }
         }
 
@@ -364,12 +376,12 @@
         }
     }
 
-    &.simulate-userstyles {
-        background: #435;
+    &.dark-mode {
+        background: #191919;
         color: #fff;
 
         & > .post-footer {
-            --size-meter-fg: 255 255 255;
+            --size-meter-fg: 191 186 181;
         }
 
         & > .post-header .config-preview-item {
@@ -381,53 +393,8 @@
         }
 
         & > .p-prose-outer {
-            background: #324;
-
-            & > .p-prose {
-                color: #f2f0f5;
-                --tw-prose-body: #f2f0f5;
-                --tw-prose-headings: #faf5ff;
-                --tw-prose-lead: #e1e0e3;
-                --tw-prose-links: #fff;
-                --tw-prose-bold: #fff;
-                --tw-prose-counters: #a6a0af;
-                --tw-prose-bullets: #969099;
-                --tw-prose-hr: #546;
-                --tw-prose-quotes: #fff;
-                --tw-prose-quote-borders: #546;
-                --tw-prose-code: #fff;
-                --tw-prose-pre-code: #f0f0f5;
-                --tw-prose-pre-bg: #213;
-                --tw-prose-th-borders: #546;
-                --tw-prose-td-borders: #435;
-            }
-
-            & > .prose-read-more {
-                background: inherit;
-                color: color-mix(in lab, rgb(var(--color-accent)), white);
-            }
-        }
-    }
-
-    &.dark-mode {
-        background: #191919;
-        color: #fff;
-        --tw-border-opacity: 1;
-
-        & > .post-footer {
-            --size-meter-fg: 255 255 255;
-        }
-
-        & > .post-header .config-preview-item {
-            background: #020202;
-        }
-
-        & > hr {
-            border-color: #fff2;
-        }
-
-        & > .p-prose-outer {
             background: #000;
+            --tw-border-opacity: 1;
 
             & > .p-prose {
                 color: rgb(255, 249, 242);
@@ -452,15 +419,6 @@
                 background: inherit;
                 color: color-mix(in lab, #000, white);
             }
-        }
-
-        .post-size-meter {
-            --size-of-max: 0;
-            color: color-mix(
-                in oklab,
-                rgb(rgb(191, 186, 181)),
-                rgb(var(--color-warning)) calc(var(--size-of-max) * 100%)
-            );
         }
     }
 }

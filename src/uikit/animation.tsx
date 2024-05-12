@@ -257,6 +257,7 @@ export class Spring {
 export namespace ElAnim {
     export interface Options {
         useAnimationFillForwards?: boolean;
+        keyframeTimeStep?: number;
     }
 }
 
@@ -283,6 +284,9 @@ export class ElAnim extends EventEmitter {
         if (nodeRef) this.node = nodeRef;
         if (typeof options.useAnimationFillForwards === 'boolean') {
             this.useAnimationFillForwards = options.useAnimationFillForwards;
+        }
+        if (options.keyframeTimeStep) {
+            this.keyframeTimeStep = options.keyframeTimeStep;
         }
     }
 
