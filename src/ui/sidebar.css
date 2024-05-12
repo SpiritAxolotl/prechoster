@@ -118,18 +118,47 @@
             > .i-file {
                 flex: 1;
                 width: 0;
-                display: block;
+                display: grid;
+                grid-template-columns: 1fr auto;
                 background: none;
                 color: inherit;
                 font: inherit;
                 text-align: left;
-                padding: 0.2em 0.55em;
                 margin: 0.1em 0.2em;
                 border: none;
                 border-radius: 0.5em;
-                transition: background 0.2s;
+                transition: background 0.2s, box-shadow 0.2s;
 
-                > .i-details {
+                > .i-button {
+                    appearance: none;
+                    background: none;
+                    color: inherit;
+                    font: inherit;
+                    padding: 0.2em 0.55em;
+                    margin: 0;
+                    border: none;
+                    text-align: inherit;
+                }
+
+                > .i-actions-button {
+                    appearance: none;
+                    background: none;
+                    border-radius: inherit;
+                    display: grid;
+                    place-content: center;
+                    color: inherit;
+                    font: inherit;
+                    border: none;
+                    transition: background 0.2s;
+                    min-width: 2.5em;
+
+                    &:hover,
+                    &.is-open {
+                        background: var(--sidebar-item-hover);
+                    }
+                }
+
+                > .i-button > .i-details {
                     > .i-title,
                     > .i-date {
                         white-space: nowrap;
@@ -143,10 +172,13 @@
                         padding-bottom: 0.2em;
                     }
                 }
+
+                &.has-actions-open {
+                    box-shadow: inset 0 0 0 1px currentColor;
+                }
             }
 
-            &:not(.is-selected) > .i-file:hover,
-            > .i-file.actions-open {
+            &:not(.is-selected) > .i-file:has(.i-button:hover) {
                 background: var(--sidebar-item-hover);
             }
 
@@ -230,19 +262,23 @@
 
             .i-actions {
                 display: flex;
+                flex-direction: column;
                 padding: 0;
                 margin: 0;
                 list-style: none;
-                border-top: 1px solid var(--separator);
 
                 & li {
                     flex: 1;
+                    display: grid;
 
-                    & button {
+                    > button {
+                        grid-area: 1 / 1;
                         background: none;
                         border: none;
                         color: inherit;
                         font: inherit;
+                        padding: 0.4em 0.7em;
+                        text-align: left;
 
                         &:active {
                             opacity: 0.5;
@@ -250,7 +286,7 @@
                     }
 
                     & + li {
-                        border-left: 1px solid var(--separator);
+                        border-top: 1px solid var(--separator);
                     }
                 }
             }
