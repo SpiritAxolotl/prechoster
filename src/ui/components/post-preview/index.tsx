@@ -9,7 +9,7 @@ import {
 } from './cohost-renderer';
 import { RenderContext } from '../../render-context';
 import { CohostPlusIcon, CohostRegularIcon, PreviewRenderIcon } from '../icons';
-import './index.less';
+import './index.scss';
 import {
     COHOST_APPROX_MAX_PAYLOAD_SIZE,
     ErrorMessage,
@@ -20,7 +20,7 @@ import {
 } from './basic-renderer';
 import { Button } from '../../../uikit/button';
 import { createPortal } from 'react-dom';
-import { DarkModeButton } from './dark-mode-button';
+import { DarkThemeButton } from './dark-theme-button';
 
 const RESET_ON_RENDER = true;
 
@@ -36,7 +36,7 @@ function BasicRenderer({
     return (
         <>
             <div
-                className="inner-prose p-prose basic-renderer"
+                className="inner-prose prose p-prose co-prose basic-renderer"
                 role="article"
                 dangerouslySetInnerHTML={{ __html: html }}
             />
@@ -61,7 +61,7 @@ function CohostRenderer({
     return (
         <Fragment>
             <div
-                className="inner-prose p-prose cohost-renderer"
+                className="inner-prose prose p-prose co-prose cohost-renderer"
                 role="article"
                 key={RESET_ON_RENDER && renderId}
             >
@@ -179,7 +179,8 @@ export interface PreviewConfig {
     render: RenderConfig;
     cohostRenderer: boolean;
     prefersReducedMotion: boolean;
-    darkMode: boolean;
+    darkTheme: boolean;
+    siteDarkTheme: boolean;
 }
 
 const DEFAULT_RENDER_CONFIG: RenderConfig = {
@@ -193,7 +194,8 @@ export const DEFAULT_PREVIEW_CONFIG: PreviewConfig = {
 
     cohostRenderer: true,
     prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-    darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+    darkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches,
+    siteDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches,
 };
 
 export function PostPreview({
@@ -251,7 +253,10 @@ export function PostPreview({
     return (
         <div
             className={
-                'post-preview' + (stale ? ' is-stale' : '') + (config.darkMode ? ' dark-mode' : '')
+                'post-preview' +
+                (stale ? ' is-stale' : '') +
+                (config.darkTheme ? ' dark-theme' : '') +
+                (config.siteDarkTheme ? ' is-site-dark-theme' : '')
             }
         >
             <div className="post-header">
@@ -261,9 +266,9 @@ export function PostPreview({
                         config={config}
                         onConfigChange={onConfigChange}
                     />
-                    <DarkModeButton
-                        isDark={config.darkMode}
-                        onClick={() => onConfigChange({ ...config, darkMode: !config.darkMode })}
+                    <DarkThemeButton
+                        isDark={config.darkTheme}
+                        onClick={() => onConfigChange({ ...config, darkTheme: !config.darkTheme })}
                     />
                 </span>
                 <span className="i-errors-container">
@@ -289,7 +294,7 @@ export function PostPreview({
             <hr />
             {error ? (
                 <div className="prose-container p-prose-outer">
-                    <div className="inner-prose p-prose is-error">
+                    <div className="inner-prose prose p-prose co-prose is-error">
                         {error
                             .toString()
                             .split('\n')
@@ -299,7 +304,12 @@ export function PostPreview({
                     </div>
                 </div>
             ) : (
-                <div className="prose-container p-prose-outer" ref={proseContainer}>
+                <div
+                    className="prose-container p-prose-outer co-themed-box"
+                    ref={proseContainer}
+                    data-theme={config.darkTheme ? 'dark' : 'light'}
+                    data-media-color-scheme={config.siteDarkTheme ? 'dark' : 'light'}
+                >
                     <DynamicStyles config={config} />
                     <MarkdownRenderer
                         renderId={renderId}
@@ -386,11 +396,17 @@ const RENDER_CONFIG_ITEMS: { [k: string]: RenderConfigItem } = {
         inRender: true,
         requiresCohostRenderer: true,
     },
+    siteDarkTheme: {
+        short: null,
+        label: 'Dark Site Theme',
+        description:
+            'Sets the site theme to the dark theme. Controlled by the OS theme on Cohost. Affects variables like `--color-text`.',
+    },
     disableEmbeds: {
         short: [null, 'no embeds'],
         label: 'Disable Embeds',
         description:
-            'Disables iframely embeds in the post. This is a feature in cohost settings. Though, quite frankly, it’s not very useful here.',
+            'Disables Iframely embeds in the post. This is a feature in Cohost settings. Though, quite frankly, it’s not very useful here.',
         inRender: true,
         requiresCohostRenderer: true,
     },
@@ -528,41 +544,46 @@ function RenderConfigPopover({
     );
 }
 
-function DynamicStyles({ config }: { config: PreviewConfig }) {
-    const div = useRef<HTMLDivElement>(null);
-    const contents: string[] = [];
+const globalDynamicStyles = (() => {
+    // we'll just create two global style tags and set their disabled property,
+    // because doing it any other way causes glitches in e.g. Firefox
 
-    if (config.prefersReducedMotion) {
-        contents.push(
-            `
-@keyframes pulse {
-  50% {
-    opacity: 0.5;
-  }
-}
-      `.trim()
-        );
-    } else {
-        contents.push(
-            `
+    const styleMotion = document.createElement('style');
+    const styleReduced = document.createElement('style');
+
+    styleMotion.className = styleReduced.className = 'post-dynamic-styles';
+
+    styleMotion.innerHTML = `
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
-      `.trim()
-        );
-    }
+    `;
+    styleReduced.innerHTML = `
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+    `;
+    document.head.append(styleMotion, styleReduced);
 
+    const setReducedMotion = (reduced: boolean) => {
+        styleMotion.disabled = reduced;
+        styleReduced.disabled = !reduced;
+    };
+    setReducedMotion(false);
+
+    return { setReducedMotion };
+})();
+
+function DynamicStyles({ config }: { config: PreviewConfig }) {
     useEffect(() => {
-        if (!div.current) return;
-        div.current.innerHTML = '';
-        const style = document.createElement('style');
-        style.innerHTML = contents.join('\n');
-        div.current.append(style);
+        globalDynamicStyles.setReducedMotion(config.prefersReducedMotion);
     }, [config]);
 
-    return <div className="post-dynamic-styles" ref={div}></div>;
+    return null;
 }
 
 function PostSize({ size }: { size: number }) {

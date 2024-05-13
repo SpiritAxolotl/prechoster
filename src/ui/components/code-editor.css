@@ -1,5 +1,5 @@
 .code-editor {
-    border: 1px solid var(--separator);
+    border: 1px solid var(--P-separator);
     border-radius: 0.5em;
     overflow: hidden;
     min-height: 100px;
@@ -7,10 +7,6 @@
     resize: vertical;
     display: flex;
     flex-direction: column;
-
-    @media (max-height: 600px) {
-        height: 50vh;
-    }
 
     .editor-footer {
         flex-shrink: 0;
@@ -25,6 +21,12 @@
 
     .cm-editor {
         height: 100%;
-        font-size: var(--font-size-code);
+        font-size: var(--P-font-size-code);
+    }
+}
+
+@media (max-height: 600px) {
+    .code-editor {
+        height: 50vh;
     }
 }

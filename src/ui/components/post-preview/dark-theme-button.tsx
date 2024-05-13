@@ -1,4 +1,4 @@
-import './dark-mode-button.css';
+import './dark-theme-button.css';
 import { useAnimation, useSpring } from '../../../uikit/animation';
 import { useRef } from 'react';
 
@@ -39,7 +39,7 @@ function makeIcon({
     return `path(evenodd, "${d}")`;
 }
 
-export function DarkModeButton({ isDark, onClick }: { isDark: boolean; onClick: () => void }) {
+export function DarkThemeButton({ isDark, onClick }: { isDark: boolean; onClick: () => void }) {
     const iconRef = useRef<HTMLDivElement>(null);
     const dark = useSpring({ value: isDark ? 1 : 0, period: 0.9 });
     dark.setTarget(isDark ? 1 : 0);
@@ -71,11 +71,14 @@ export function DarkModeButton({ isDark, onClick }: { isDark: boolean; onClick: 
 
     const styles = anim.getCurrentStyles();
 
+    const label = isDark ? 'switch to light theme' : 'switch to dark theme';
+
     return (
         <button
-            className={'dark-mode-button' + (isDark ? ' is-dark' : '')}
+            className={'dark-theme-button' + (isDark ? ' is-dark' : '')}
             onClick={onClick}
-            aria-label={isDark ? 'light mode' : 'dark mode'}
+            title={label}
+            aria-label={label}
         >
             <div ref={iconRef} className="i-icon" style={styles} />
             <div className="i-label" aria-hidden={true}>

@@ -10,6 +10,14 @@
         grid-template-columns: 100%;
         grid-template-rows: 100%;
 
+        /* show site theme in background color */
+        &:has(> .i-preview-area > .i-post-preview) {
+            background: linear-gradient(to bottom, var(--P-cohost-bg), rgb(var(--P-color-bg)));
+        }
+        &:has(> .i-preview-area > .i-post-preview > .is-site-dark-theme) {
+            background: var(--P-cohost-dark-bg);
+        }
+
         & > .i-preview-area {
             grid-area: 1 / 1;
             overflow: auto;
@@ -34,7 +42,7 @@
         align-items: center;
         gap: 0.5em;
         position: relative;
-        border-bottom: 1px solid rgb(var(--color-accent));
+        border-bottom: 1px solid rgb(var(--P-color-accent));
         box-shadow: 0 1px 2px #0002;
         z-index: 1;
 
@@ -65,7 +73,7 @@
                 height: 100%;
                 box-sizing: border-box;
                 border-radius: 50%;
-                border: 2px solid rgb(var(--color-accent));
+                border: 2px solid rgb(var(--P-color-accent));
                 border-bottom-color: transparent;
             }
 
@@ -75,8 +83,8 @@
                 transition: opacity 0.1s;
 
                 &::before {
-                    animation: data-preview-render-indicator-spin 1s infinite linear;
-                    @keyframes data-preview-render-indicator-spin {
+                    animation: P-data-preview-render-indicator-spin 1s infinite linear;
+                    @keyframes P-data-preview-render-indicator-spin {
                         0% {
                             transform: none;
                         }
@@ -90,7 +98,7 @@
     }
 
     & > .i-contents > .i-preview-area > .preview-error-placeholder {
-        background: rgb(var(--card-bg));
+        background: rgb(var(--P-card-bg));
         border-radius: 0.5em;
         padding: 0.5em 1em;
         margin: 1em;
@@ -99,8 +107,8 @@
     }
 
     & > .i-contents > .i-error-area > .preview-error {
-        background: rgb(var(--card-bg));
-        border: 2px solid var(--error);
+        background: rgb(var(--P-card-bg));
+        border: 2px solid var(--P-error);
         margin: 1em;
         padding: 0.5em 1em;
         border-radius: 0.5em;
@@ -112,9 +120,9 @@
         .error-contents {
             margin-top: 0.5em;
             padding-top: 0.5em;
-            border-top: 1px solid var(--separator);
+            border-top: 1px solid var(--P-separator);
             white-space: pre-wrap;
-            font-family: var(--monospace);
+            font-family: var(--P-monospace);
             font-size: smaller;
             overflow-wrap: break-word;
         }
@@ -136,7 +144,7 @@
     & > .i-contents > .i-preview-area > .i-data-preview {
         margin: 1em;
         border-radius: 0.5em;
-        background: rgb(var(--card-bg));
+        background: rgb(var(--P-card-bg));
         user-select: text;
         contain: layout;
     }
@@ -149,8 +157,8 @@
 
         button {
             font: inherit;
-            background: rgb(var(--color-accent));
-            color: rgb(var(--color-accent-fg));
+            background: rgb(var(--P-color-accent));
+            color: rgb(var(--P-color-accent-fg));
             border: none;
             padding: 0.5em 2em;
             border-radius: 0.5em;

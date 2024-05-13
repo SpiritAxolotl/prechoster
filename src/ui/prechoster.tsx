@@ -7,7 +7,7 @@ import { Document, ModuleId, RenderOutput, RenderState } from '../document';
 import { RenderContext } from './render-context';
 // @ts-ignore
 import { homepage as sourceLink } from '../../package.json';
-import './prechoster.less';
+import './prechoster.scss';
 
 interface PrechosterState {
     render: RenderState;

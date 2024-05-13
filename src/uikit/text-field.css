@@ -2,8 +2,8 @@
     display: inline-flex;
     width: 16em;
     max-width: 100%;
-    background: rgb(var(--color-shade) / var(--color-shade-opacity));
-    border: 1px solid rgb(var(--color-soft-outline) / var(--color-soft-outline-opacity));
+    background: rgb(var(--P-color-shade) / var(--P-color-shade-opacity));
+    border: 1px solid rgb(var(--P-color-soft-outline) / var(--P-color-soft-outline-opacity));
     border-radius: 0.5em;
     box-sizing: border-box;
 
@@ -18,7 +18,7 @@
         flex: 1;
 
         &::placeholder {
-            color: rgb(var(--color-fg) / 0.5);
+            color: rgb(var(--P-color-fg) / 0.5);
         }
 
         &:focus {
@@ -27,8 +27,8 @@
     }
 
     &.is-focused {
-        box-shadow: 0 0 0 0.2em rgb(var(--color-accent) / 0.5);
-        animation: uikit-text-field-focus-in 0.3s var(--ease-default);
+        box-shadow: 0 0 0 0.2em rgb(var(--P-color-accent) / 0.5);
+        animation: uikit-text-field-focus-in 0.3s var(--P-ease-default);
     }
 
     &.is-narrow .i-inner-field {
@@ -44,6 +44,6 @@
 
 @keyframes uikit-text-field-focus-in {
     0% {
-        box-shadow: 0 0 0 1em rgb(var(--color-accent) / 0);
+        box-shadow: 0 0 0 1em rgb(var(--P-color-accent) / 0);
     }
 }

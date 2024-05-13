@@ -9,7 +9,7 @@ import {
 } from '../../document';
 import { CodeEditor } from '../../ui/components/code-editor';
 import { less as cmLess } from '@codemirror/lang-less';
-import './lesscss.less';
+import './lesscss.css';
 
 // @ts-ignore
 import Less from 'less/lib/less';

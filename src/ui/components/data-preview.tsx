@@ -1,6 +1,6 @@
 import { createRef, PureComponent } from 'react';
 import { Data, PlainTextData, HtmlData } from '../../document';
-import './data-preview.less';
+import './data-preview.css';
 
 export function DataPreview({ data }: { data: Data }) {
     if (data instanceof HtmlData) {

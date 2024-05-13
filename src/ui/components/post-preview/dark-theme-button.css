@@ -1,4 +1,4 @@
-.dark-mode-button {
+.dark-theme-button {
     display: flex;
     gap: 0.2em;
     align-items: center;
@@ -8,7 +8,7 @@
     color: inherit;
     margin: 0;
     padding: 0 0.3em 0 0.1em;
-    border: 1px solid rgb(var(--color-accent));
+    border: 1px solid rgb(var(--P-color-accent));
     border-radius: 0.5em;
 
     &:active {

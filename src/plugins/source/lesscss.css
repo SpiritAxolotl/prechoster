@@ -1,7 +1,7 @@
 .plugin-less-editor {
     .less-variables {
         .less-variable {
-            font-family: var(--monospace);
+            font-family: var(--P-monospace);
             font-size: smaller;
             padding: 0.1em 0.2em;
             background: rgba(0, 0, 0, 0.1);

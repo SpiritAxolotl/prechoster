@@ -13,7 +13,7 @@ import { layoutNodes } from './auto-layout';
 import { GRID_SIZE, MIN_COL_GAP, MOD_BASE_WIDTH } from './consts';
 import { ModulePicker } from '../module-picker';
 import 'reactflow/dist/style.css';
-import './index.less';
+import './index.css';
 import { Button } from '../../../uikit/button';
 
 export type EdgeId = string;

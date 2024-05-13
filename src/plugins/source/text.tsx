@@ -12,7 +12,7 @@ import { EditorView } from '@codemirror/view';
 import { html } from '@codemirror/lang-html';
 import { css } from '@codemirror/lang-css';
 import { javascript } from '@codemirror/lang-javascript';
-import './text.less';
+import './text.css';
 
 const HTML_CONTENTEDITABLE = 'html-contenteditable';
 

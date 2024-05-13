@@ -14,7 +14,7 @@ import {
 import { AnimationController, Spring } from '../../uikit/frame-animation';
 import { shouldReduceMotion } from '../../uikit/animation';
 import { ModulePicker } from './module-picker';
-import './module-list.less';
+import './module-list.css';
 import { TextField } from '../../uikit/text-field';
 import { EditIcon } from './icons';
 
