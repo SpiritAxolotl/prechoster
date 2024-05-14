@@ -141,7 +141,7 @@ export default function ApplicationFrame({ storage }: { storage: Storage }) {
                         setLoading(false);
                     } else {
                         // open default example
-                        openInitialExample('default.pchost');
+                        openInitialExample('default.toml');
                     }
                 } else {
                     setLoading(false);

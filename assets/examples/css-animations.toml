@@ -1,0 +1,158 @@
+version = 1
+title = 'CSS Animations'
+
+[[modules]]
+plugin = 'source.text'
+data.language = 'html'
+data.contents = '''
+## CSS animations available on Cohost
+While you cannot define your own `@keyframes` with inline CSS on Cohost, you can still call existing animations defined elsewhere on the page. Use them wisely…
+
+### Always available
+
+<ul class="demos">
+  <li>
+    <code>slideupleft</code>
+    <div class="demo-box" style="animation: slideupleft 3s infinite"></div>
+  </li>
+  <li>
+    <code>slideupright</code>
+    <div class="demo-box" style="animation: slideupright 3s infinite"></div>
+  </li>
+  <li>
+    <code>bounce</code>
+    <div class="demo-box" style="animation: bounce 1s infinite"></div>
+  </li>
+
+  <li>
+    <code>go3020080000</code>
+    <div class="demo-box" style="animation: go3020080000 2s infinite"></div>
+  </li>
+  <li>
+    <code>go901347462</code>
+    <div class="demo-box" style="animation: go901347462 2s infinite"></div>
+  </li>
+  <li style="min-height: 8em">
+    <code>go651618207</code>
+    <div class="demo-box" style="animation: go651618207 2s infinite"></div>
+    <small>(affects layout)</small>
+  </li>
+
+  <li>
+    <code>go2264125279</code>
+    <div class="demo-box" style="animation: go2264125279 2s infinite"></div>
+  </li>
+  <li>
+    <code>go463499852</code>
+    <div class="demo-box" style="animation: go463499852 2s infinite">(rotated)</div>
+  </li>
+  <li>
+    <code>go1268368563</code>
+    <div class="demo-box" style="animation: go1268368563 2s infinite"></div>
+  </li>
+</ul>
+
+</details>
+
+### Available only when reduced motion is <span style="color: #07f">disabled</span>
+
+<div>
+  Reduced motion is currently: <span class="reduced-motion-check">
+    <span class="a">
+      disabled
+      <span class="b">enabled</span>
+    </span>
+  </span>
+</div>
+
+<ul class="demos">
+  <li>
+    <code>spin</code>
+    <div class="demo-box" style="animation: spin 3s infinite"></div>
+  </li>
+  <li>
+    <code>spin</code>
+    <div class="demo-box" style="animation: spin 1s infinite alternate; transform: translateY(2em) rotate(20deg)">also spin</div>
+  </li>
+  <li>
+    <code>spin</code>
+    <div style="perspective: 400px; background: none; display: grid; place-content: center">
+      <div style="transform-style: preserve-3d; animation: spin 5s infinite alternate; transform: translateX(-100%) rotate(180deg)">
+        <div class="demo-box" style="background: #777; animation: spin 2s infinite alternate; transform: rotateX(180deg)">spin is very versatile</div>
+      </div>
+    </div>
+  </li>
+</ul>
+
+### Available only when reduced motion is <span style="color: #7a0">enabled</span>
+<ul class="demos">
+  <li>
+    <code>pulse</code>
+    <div class="demo-box" style="animation: pulse 2s infinite"></div>
+  </li>
+</ul>'''
+sends = [2]
+
+[[modules]]
+plugin = 'source.text'
+data.contents = '''
+ul.demos {
+  display: grid;
+  list-style: none;
+  padding: 0;
+  gap: 1em;
+  grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+}
+
+ul.demos > li {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  padding: 1em;
+  background: #7772;
+  border: 1px solid #7777;
+  border-radius: 0.5em;
+}
+
+.demo-box {
+  background: gray;
+  color: white;
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-content: center;
+  font-size: 0.7em;
+  line-height: 1.1;
+}
+
+.reduced-motion-check {
+  display: inline-block;
+  overflow: hidden;
+  font-weight: bold;
+  height: 1.25em;
+  position: relative;
+  line-height: 1;
+  vertical-align: middle;
+}
+.reduced-motion-check .a {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  transform: translateX(-100%);
+  animation: spin 0s forwards;
+  color: #07f;
+}
+.reduced-motion-check .b {
+  position: absolute;
+  left: 100%;
+  color: #7a0;
+}
+'''
+data.language = 'css'
+sends = [2]
+
+[[modules]]
+plugin = 'transform.style-inliner'
+data.mode = 'attr'
+sends = ['output']

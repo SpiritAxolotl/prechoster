@@ -1,33 +1,41 @@
 {
-    "default.pchost": {
+    "default.toml": {
         "title": "Style Inlining",
         "description": "Inline a CSS stylesheet into HTML."
     },
-    "lesscss-files.pchost": {
+    "css-animations.toml": {
+        "title": "CSS Animations",
+        "description": "Use predefined animations available on Cohost."
+    },
+    "lesscss-files.toml": {
         "title": "LessCSS Variables",
         "description": "Use LessCSS variables to include files as background images."
     },
-    "scss-files.pchost": {
+    "scss-files.toml": {
         "title": "Sass Modules",
         "description": "Use Sass modules to include files as background images."
     },
-    "svelte-templates.pchost": {
+    "svelte-templates.toml": {
         "title": "Svelte Templating",
         "description": "Use Svelte components for various kinds of templating."
     },
-    "svelte-chat-log.pchost": {
+    "svelte-chat-log.toml": {
         "title": "Svelte Chat Log",
         "description": "Use Svelte to create a simple chat log template."
     },
-    "katex-mathml.pchost": {
+    "slideshow.toml": {
+        "title": "Slideshow",
+        "description": "Use Svelte and <details> to create a slideshow."
+    },
+    "katex-mathml.toml": {
         "title": "KaTeX MathML",
         "description": "Use KaTeX to easily render TeX markup to MathML."
     },
-    "animated-svg-background.pchost": {
+    "animated-svg-background.toml": {
         "title": "Animated SVG Background",
         "description": "Use @keyframes to animate SVG elements and embed them as a background image."
     },
-    "svg-conditional-css.pchost": {
+    "svg-conditional-css.toml": {
         "title": "Conditional CSS inside SVG",
         "description": "Use SVG backgrounds to trigger CSS animation with a click interaction."
     }
