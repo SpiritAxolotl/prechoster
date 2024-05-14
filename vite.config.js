@@ -10,7 +10,7 @@ const prod = process.env.NODE_ENV === 'production';
 
 const CONFIG = {
     staticUrlPrefix: process.env.PRECHOSTER_STATIC || 'https://cohost.org/static/',
-    gitCommitHash: process.env.PRECHOSTER_GIT_COMMIT_HASH || childProcess
+    gitCommitHash: process.env.PRECHOSTER_GIT_COMMIT_HASH?.substring(0, 7) || childProcess
         .execSync('git rev-parse --short HEAD', {
             cwd: __dirname,
             encoding: 'utf-8',
