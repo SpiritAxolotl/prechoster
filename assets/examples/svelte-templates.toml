@@ -1,0 +1,45 @@
+version = 1
+title = 'Svelte Templating'
+
+[[modules]]
+plugin = 'source.svelte'
+data.contents = '''
+<script>
+  import Box from './Box.svelte';
+  import textData from './text-data';
+</script>
+
+<Box>
+  Hello {textData.toUpperCase()}
+</Box>'''
+sends = [3]
+
+[[modules]]
+plugin = 'source.text'
+data.contents = 'world!'
+data.language = 'text'
+namedSends = { '0' = ['text-data'] }
+
+[[modules]]
+plugin = 'source.svelte-component'
+data.name = 'Box'
+data.contents = '''
+<div class="box">
+  <slot></slot>
+</div>
+
+<style>
+  .box {
+    border: 0.3em solid black;
+    background: linear-gradient(to bottom, #fff, #eee);
+    color: black;
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
+  }
+</style>'''
+sends = [0]
+
+[[modules]]
+plugin = 'transform.style-inliner'
+data.mode = 'attr'
+sends = ['output']

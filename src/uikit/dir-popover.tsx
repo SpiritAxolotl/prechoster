@@ -279,7 +279,7 @@ export class DirPopover extends PureComponent<DirPopover.Props> {
                 <div
                     className="inner-backdrop"
                     onClick={this.onDialogClose}
-                    style={{ opacity: presence }}
+                    style={{ opacity: presence * (this.props.shade === false ? 0 : 1) }}
                 />
                 <div
                     ref={this.popover}
@@ -315,5 +315,6 @@ namespace DirPopover {
         onClose: () => void;
         /** Popover contents */
         children: React.ReactNode;
+        shade?: boolean;
     }
 }

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Document } from '../document';
 import { StorageContext } from '../storage-context';
 import { Button } from '../uikit/button';
+import { getExampleDocument } from '../storage';
 import './examples.css';
 
 interface ExamplesProps {
@@ -45,8 +46,7 @@ export function ExamplesMenu({ onLoad }: ExamplesProps) {
 
     const loadExample = (id: string) => {
         setLoadingExample(true);
-        return storage
-            .getExampleDocument(id)
+        return getExampleDocument(id)
             .then((doc) => {
                 onLoad(doc);
             })

@@ -17,7 +17,7 @@
     }
     .i-error {
         .i-error-text {
-            color: var(--error-text);
+            color: var(--P-error-text);
         }
 
         .i-retry-container {
@@ -47,7 +47,7 @@
                 left: 0.75em;
                 right: 0.75em;
                 bottom: 0;
-                border-top: 1px solid var(--separator);
+                border-top: 1px solid var(--P-separator);
             }
 
             .i-inner {

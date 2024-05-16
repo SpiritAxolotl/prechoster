@@ -22,15 +22,40 @@ export async function initStorage(): Promise<Storage> {
     return new Storage(db);
 }
 
-export { deserialize, serialize };
+export { deserialize, serialize, nextDocumentId };
+
+export async function getExampleDocument(id: string) {
+    const res = await fetch(new URL(`../../assets/examples/${id}`, import.meta.url));
+    if (!res.ok) throw await res.text();
+    const docData = await res.text();
+    return deserialize(docData);
+}
 
 export interface DocumentInfo {
     id: string;
     title: string;
+    /** ISO date string */
     dateModified: string;
 }
 
-export class Storage extends EventTarget {
+export interface IStorage {
+    getOpenDocuments(): Promise<string[]>;
+    addOpenDocument(doc: string): Promise<void>;
+    removeOpenDocument(doc: string): Promise<void>;
+    hasAnySavedDocuments(): Promise<boolean>;
+    listAllDocumentIds(): Promise<string[]>;
+    listDocumentsByDate(fromDate: string | null, count: number): Promise<DocumentInfo[]>;
+    listDocumentsByIdInclusive(fromId: string, count: number): Promise<DocumentInfo[]>;
+    getDocument(id: string): Promise<Document | null>;
+    saveDocument(id: string, doc: Document): Promise<void>;
+    deleteDocument(id: string): Promise<void>;
+    close(): void;
+
+    addEventListener(event: string, handler: EventListener): void;
+    removeEventListener(event: string, handler: EventListener): void;
+}
+
+export class Storage extends EventTarget implements IStorage {
     db: IDBPDatabase<Schema>;
 
     constructor(db: IDBPDatabase<Schema>) {
@@ -132,18 +157,78 @@ export class Storage extends EventTarget {
         this.dispatchEvent(new CustomEvent('delete-document', { detail: id }));
     }
 
-    async getExampleDocument(id: string): Promise<Document> {
-        const res = await fetch(new URL(`../../assets/examples/${id}`, import.meta.url));
-        if (!res.ok) throw await res.text();
-        const docData = await res.text();
-        return deserialize(docData);
-    }
-
-    static nextDocumentId(): string {
-        return nextDocumentId();
-    }
-
     close() {
         this.db.close();
+    }
+}
+
+export class MemoryStorage extends EventTarget implements IStorage {
+    documents = new Map<string, { doc: Document; dateModified: Date }>();
+    openDocuments = new Set<string>();
+
+    async addOpenDocument(doc: string): Promise<void> {
+        this.openDocuments.add(doc);
+        this.dispatchEvent(new CustomEvent('update-open-documents'));
+    }
+
+    close(): void {
+        // bye
+    }
+
+    async deleteDocument(id: string): Promise<void> {
+        this.documents.delete(id);
+        this.dispatchEvent(new CustomEvent('update-documents'));
+        this.dispatchEvent(new CustomEvent('update-open-documents'));
+        this.dispatchEvent(new CustomEvent('delete-document', { detail: id }));
+    }
+
+    async getDocument(id: string): Promise<Document | null> {
+        return this.documents.get(id)?.doc ?? null;
+    }
+
+    async getOpenDocuments(): Promise<string[]> {
+        return [...this.openDocuments];
+    }
+
+    async hasAnySavedDocuments(): Promise<boolean> {
+        return this.documents.size > 0;
+    }
+
+    async listAllDocumentIds(): Promise<string[]> {
+        return [...this.documents.keys()];
+    }
+
+    async listDocumentsByDate(fromDate: string | null, count: number): Promise<DocumentInfo[]> {
+        return [...this.documents]
+            .filter(([, entry]) => (fromDate ? +entry.dateModified <= +new Date(fromDate) : true))
+            .sort(([, a], [, b]) => +b.dateModified - +a.dateModified)
+            .slice(0, count)
+            .map(([id, entry]) => ({
+                id,
+                title: entry.doc.title,
+                dateModified: entry.dateModified.toISOString(),
+            }));
+    }
+
+    async listDocumentsByIdInclusive(fromId: string, count: number): Promise<DocumentInfo[]> {
+        return [...this.documents]
+            .filter(([id]) => id.localeCompare(fromId) >= 0)
+            .sort(([a], [b]) => a.localeCompare(b))
+            .slice(0, count)
+            .map(([id, entry]) => ({
+                id,
+                title: entry.doc.title,
+                dateModified: entry.dateModified.toISOString(),
+            }));
+    }
+
+    async removeOpenDocument(doc: string): Promise<void> {
+        this.openDocuments.delete(doc);
+        this.dispatchEvent(new CustomEvent('update-open-documents'));
+    }
+
+    async saveDocument(id: string, doc: Document): Promise<void> {
+        this.documents.set(id, { doc, dateModified: new Date() });
+        this.dispatchEvent(new CustomEvent('update-documents'));
     }
 }

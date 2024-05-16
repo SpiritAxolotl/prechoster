@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { DirPopover } from '../../uikit/dir-popover';
 import { ModuleDef, MODULES } from '../../plugins';
 import { ModulePlugin, JsonValue } from '../../document';
-import './module-picker.less';
+import './module-picker.css';
 
 export function ModulePicker({ open, anchor, onClose, onPick }: ModulePicker.Props) {
     return (

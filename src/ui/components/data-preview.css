@@ -4,12 +4,12 @@
     color-scheme: light;
     border-radius: 0.5em;
     overflow: auto;
-    font-size: var(--font-size-content);
+    font-size: var(--P-font-size-content);
 }
 
 .data-preview-text {
     padding: 1rem;
-    font-family: var(--monospace);
+    font-family: var(--P-monospace);
     font-size: smaller;
     white-space: pre-wrap;
     overflow: auto;

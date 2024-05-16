@@ -1,0 +1,125 @@
+version = 1
+title = 'Slideshow'
+
+[[modules]]
+plugin = 'source.svelte'
+data.contents = '''
+<script>
+  import Slide from './Slide.svelte';
+</script>
+
+<div class="slideshow-container">
+  slide one
+  <Slide>
+    <div class="slide-contents">
+      slide two
+    </div>
+    <Slide>
+      <div class="slide-contents">
+        slide three
+      </div>
+      <Slide>
+        <div class="slide-contents">
+          slide four
+        </div>
+      </Slide>
+    </Slide>
+  </Slide>
+</div>'''
+sends = [3]
+
+[[modules]]
+plugin = 'source.sass'
+data.contents = '''
+.slideshow-container {
+  $background-color: #333;
+  color: white;
+
+  $aspect-ratio: 6 / 4;
+  $slide-button-width: 2rem;
+  $slide-button-height: 2rem;
+  $slide-button-text-size: 2rem;
+
+  position: relative;
+  aspect-ratio: $aspect-ratio;
+  background: $background-color;
+
+  .slide {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: right;
+  }
+
+  .next-slide-button {
+    display: inline-grid;
+    place-content: center;
+    pointer-events: all;
+    width: $slide-button-width;
+    height: $slide-button-height;
+    font-size: 0;
+    vertical-align: bottom;
+    cursor: default;
+
+    .text-contents {
+      font-size: $slide-button-text-size;
+    }
+  }
+
+  .fake-prev-slide-button {
+    position: absolute;
+    display: inline-grid;
+    place-content: center;
+    width: $slide-button-width;
+    height: $slide-button-height;
+    right: $slide-button-width;
+    font-size: $slide-button-text-size;
+    bottom: 0;
+  }
+
+  .displace-prev-slide-button {
+    display: inline-block;
+    width: $slide-button-width;
+  }
+
+  .slide-shroud {
+    text-align: left;
+    background: $background-color;
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    aspect-ratio: $aspect-ratio;
+    bottom: 0;
+  }
+
+  .slide-contents {
+    position: absolute;
+    inset: 0;
+    bottom: $slide-button-height;
+    pointer-events: all;
+  }
+}'''
+data.syntax = 'scss'
+sends = [3]
+
+[[modules]]
+plugin = 'source.svelte-component'
+data.name = 'Slide'
+data.contents = '''
+<details class="slide">
+  <summary class="next-slide-button">
+    <span class="text-contents">▶</span>
+  </summary>
+  <div class="displace-prev-slide-button"></div>
+  <div class="slide-shroud">
+    <div class="fake-prev-slide-button">◀</div>
+    <slot></slot>
+  </div>
+</details>'''
+sends = [0]
+
+[[modules]]
+plugin = 'transform.style-inliner'
+data.mode = 'attr'
+sends = ['output']

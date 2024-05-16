@@ -15,9 +15,9 @@
     width: 100vw;
     pointer-events: none;
     z-index: 1000;
-    --popout-bg: rgb(var(--color-bg));
-    --popout-outline: rgb(var(--color-soft-outline) / var(--color-soft-outline-opacity));
-    --popout-accent: rgb(var(--color-accent));
+    --popout-bg: rgb(var(--P-color-bg));
+    --popout-outline: rgb(var(--P-color-soft-outline) / var(--P-color-soft-outline-opacity));
+    --popout-accent: rgb(var(--P-color-accent));
 
     .popout-satellite-inner {
         position: absolute;
@@ -58,7 +58,7 @@
                 font: inherit;
                 color: inherit;
                 line-height: 0;
-                transition: opacity 0.3s var(--ease-default);
+                transition: opacity 0.3s var(--P-ease-default);
 
                 .popout-close-icon {
                     display: inline-block;
@@ -88,7 +88,7 @@
 
                 &:active {
                     opacity: 0.5;
-                    transition: opacity 0.05s var(--ease-default);
+                    transition: opacity 0.05s var(--P-ease-default);
                 }
             }
             .popout-text {
@@ -113,11 +113,11 @@
                     margin: 0;
                     font: inherit;
                     color: var(--popout-accent);
-                    transition: opacity 0.3s var(--ease-default);
+                    transition: opacity 0.3s var(--P-ease-default);
 
                     &:active {
                         opacity: 0.5;
-                        transition: opacity 0.05s var(--ease-default);
+                        transition: opacity 0.05s var(--P-ease-default);
                     }
                 }
             }

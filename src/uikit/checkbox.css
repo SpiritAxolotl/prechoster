@@ -4,11 +4,11 @@
     width: 1em;
     height: 1em;
     border-radius: 0.3em;
-    background: rgb(var(--color-bg));
-    border: 1px solid rgb(var(--color-soft-outline) / var(--color-soft-outline-opacity));
+    background: rgb(var(--P-color-bg));
+    border: 1px solid rgb(var(--P-color-soft-outline) / var(--P-color-soft-outline-opacity));
     margin: 0.1em;
     vertical-align: middle;
-    transition: background 0.3s var(--ease-default);
+    transition: background 0.3s var(--P-ease-default);
 
     .inner-checkbox {
         position: absolute;
@@ -21,13 +21,13 @@
     }
 
     &.is-checked {
-        background: rgb(var(--color-accent));
-        transition: background 0.1s var(--ease-default);
+        background: rgb(var(--P-color-accent));
+        transition: background 0.1s var(--P-ease-default);
     }
 
     &.is-focused {
-        box-shadow: 0 0 0 0.2em rgb(var(--color-accent) / 0.5);
-        animation: uikit-checkbox-focus-ring-in 0.3s var(--ease-default);
+        box-shadow: 0 0 0 0.2em rgb(var(--P-color-accent) / 0.5);
+        animation: uikit-checkbox-focus-ring-in 0.3s var(--P-ease-default);
     }
 
     --hw: 1px;
@@ -45,7 +45,7 @@
         top: 50%;
         left: 50%;
         pointer-events: none;
-        color: rgb(var(--color-accent-fg));
+        color: rgb(var(--P-color-accent-fg));
 
         &::before,
         &::after {
@@ -87,7 +87,7 @@
     }
 
     &:not(.is-checked).was-checked .inner-check {
-        animation: uikit-checkbox-inner-check-out 0.3s var(--ease-default);
+        animation: uikit-checkbox-inner-check-out 0.3s var(--P-ease-default);
     }
 
     .inner-cross {
@@ -95,7 +95,7 @@
         top: 50%;
         left: 50%;
         pointer-events: none;
-        color: rgb(var(--color-accent-fg));
+        color: rgb(var(--P-color-accent-fg));
 
         &::before,
         &::after {
@@ -121,7 +121,7 @@
     &:not(.is-checked).was-checked .inner-cross {
         &::before,
         &::after {
-            animation: uikit-checkbox-inner-cross-in-a 0.3s var(--ease-default) backwards;
+            animation: uikit-checkbox-inner-cross-in-a 0.3s var(--P-ease-default) backwards;
         }
         &::after {
             animation-delay: 0.1s;
@@ -131,7 +131,7 @@
 
 @keyframes uikit-checkbox-focus-ring-in {
     0% {
-        box-shadow: 0 0 0 1em rgb(var(--color-accent) / 0);
+        box-shadow: 0 0 0 1em rgb(var(--P-color-accent) / 0);
     }
 }
 @keyframes uikit-checkbox-inner-check-in-a {

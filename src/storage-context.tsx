@@ -1,4 +1,4 @@
 import React, { createContext } from 'react';
-import { Storage } from './storage';
+import { IStorage } from './storage';
 
-export const StorageContext: React.Context<Storage> = createContext(null as any);
+export const StorageContext: React.Context<IStorage> = createContext(null as any);

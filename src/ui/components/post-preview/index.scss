@@ -1,41 +1,45 @@
-@import '../../../cohost-inherited.less';
+@import '../../../cohost-inherited.scss';
 
 .post-preview {
-    background: var(--cohost-bg);
+    background: white;
     color: black;
     border-radius: 0.5rem;
     box-shadow: 0 4px 5px rgba(25, 25, 25, 0.14), 0 1px 10px rgba(25, 25, 25, 0.12),
         0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 1px;
     user-select: none;
+    transition: background 1s, color 1s;
 
-    &.dark-mode {
-        box-shadow:  rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px, rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
+    &.dark-theme {
+        margin: 0;
+        box-shadow: rgba(0, 0, 0, 0.14) 0 4px 5px 0, rgba(0, 0, 0, 0.12) 0 1px 10px 0, rgba(0, 0, 0, 0.2) 0 2px 4px 0;
         border: 1px solid rgb(74, 72, 71);
     }
 
     & > hr {
         height: 0;
-        margin: 0 0.75rem;
+        margin: 0;
         border: none;
         border-top: 1px solid rgb(191 186 181);
+        transition: border-color 1s;
     }
 
-    &.dark-mode > hr {
+    &.dark-theme > hr {
         height: 0;
-        margin: 0 0;
         border: none;
         border-top: 1px solid rgb(74, 72, 71);
     }
 
     .prose-container {
-        padding: 0 0.75rem;
-        overflow: hidden;
         position: relative;
-        background: white;
-        font-size: var(--font-size-content);
+        font-size: var(--P-font-size-content);
         border: 1px solid var(--tw-border-opacity);
+        transition: all 1s;
+        overflow: clip;
+        isolation: isolate;
 
         .inner-prose {
+            padding: 0 0.75rem;
             margin: 1rem 0;
             overflow-wrap: break-word;
             max-width: 65ch;
@@ -56,17 +60,27 @@
         opacity: 0.5;
     }
 
-    & > .post-header,
-    & > .post-footer {
+    > .post-header,
+    > .post-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0.5em 0.75em;
+        background: var(--P-cohost-bg);
+        transition: background 1s;
     }
 
-    & > .post-header {
+    > .post-header {
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+
         .render-config {
             display: flex;
+        }
+
+        .i-settings-container {
+            display: flex;
+            gap: 0.5em;
         }
 
         .i-config-button,
@@ -75,7 +89,7 @@
             gap: 0.3em;
             align-items: center;
             background: none;
-            border: 1px solid var(--separator);
+            border: 1px solid var(--P-separator);
             margin: 0;
             padding: 0.1em 0.2em;
             border-radius: 0.5em;
@@ -90,8 +104,8 @@
         .i-config-button {
             display: inline-flex;
             opacity: 1;
-            border-color: rgb(var(--color-accent));
-            --active-bg: rgb(var(--color-accent));
+            border-color: rgb(var(--P-color-accent));
+            --active-bg: rgb(var(--P-color-accent));
             gap: 0.1em;
             padding: 0.1em;
             white-space: nowrap;
@@ -107,14 +121,16 @@
                 background: #0002;
                 padding: 0.1em 0.2em;
                 border-radius: 0.3em;
+
+                transition: background 1s;
             }
         }
 
         .i-errors-button {
             --fg: currentColor;
             --bg: transparent;
-            --active-bg: var(--error);
-            --active-fg: var(--error-content-fg);
+            --active-bg: var(--P-error);
+            --active-fg: var(--P-error-content-fg);
 
             .i-errors-icon {
                 display: inline-flex;
@@ -131,15 +147,15 @@
 
             &.has-errors {
                 opacity: 1;
-                border-color: var(--error);
+                border-color: var(--P-error);
 
                 .i-errors-icon {
                     background: var(--active-bg);
                     color: var(--active-fg);
                     border-color: var(--active-bg);
-                    animation: post-preview-header-errors-has-errors 1s;
+                    animation: P-post-preview-header-errors-has-errors 1s;
                 }
-                @keyframes post-preview-header-errors-has-errors {
+                @keyframes P-post-preview-header-errors-has-errors {
                     0% {
                         transform: none;
                         opacity: var(--inactive-opacity);
@@ -203,14 +219,14 @@
 
             .config-item {
                 padding: 0.5em;
-                border-top: 1px solid var(--separator);
+                border-top: 1px solid var(--P-separator);
 
                 .item-header {
                     font-weight: bold;
                     margin-bottom: 0.2em;
                 }
                 .item-description {
-                    color: rgb(var(--color-fg) / 0.8);
+                    color: rgb(var(--P-color-fg) / 0.8);
                 }
             }
         }
@@ -232,7 +248,7 @@
                 padding: 0.5em 0.75em;
 
                 & + .i-error {
-                    border-top: 1px solid var(--separator);
+                    border-top: 1px solid var(--P-separator);
                 }
 
                 .quick-help {
@@ -240,13 +256,16 @@
                     font-size: smaller;
                     border-radius: 0.5em;
                     padding: 0.5em;
-                    background: var(--info-box-bg);
+                    background: var(--P-info-box-bg);
                 }
             }
         }
     }
 
-    & > .post-footer {
+    > .post-footer {
+        border-bottom-left-radius: inherit;
+        border-bottom-right-radius: inherit;
+
         --size-meter-fg: 0 0 0;
 
         .post-size-meter {
@@ -254,7 +273,7 @@
             color: color-mix(
                 in oklab,
                 rgb(var(--size-meter-fg)),
-                rgb(var(--color-warning)) calc(var(--size-of-max) * 100%)
+                rgb(var(--P-color-warning)) calc(var(--size-of-max) * 100%)
             );
 
             .i-warning {
@@ -268,7 +287,7 @@
             position: relative;
             font: inherit;
             background: none;
-            border: 1px solid rgb(var(--color-accent));
+            border: 1px solid rgb(var(--P-color-accent));
             border-radius: 0.5em;
             padding: 0.2em 0.3em;
             color: inherit;
@@ -279,19 +298,19 @@
             }
 
             &:active {
-                background: rgb(var(--color-accent));
-                color: rgb(var(--color-accent-fg));
+                background: rgb(var(--P-color-accent));
+                color: rgb(var(--P-color-accent-fg));
             }
 
             &.did-copy {
-                animation: post-preview-copy-to-clipboard-did-copy 1s;
-                @keyframes post-preview-copy-to-clipboard-did-copy {
+                animation: P-post-preview-copy-to-clipboard-did-copy 1s;
+                @keyframes P-post-preview-copy-to-clipboard-did-copy {
                     0% {
-                        background: rgb(var(--color-accent));
+                        background: rgb(var(--P-color-accent));
                         color: transparent;
                     }
                     90% {
-                        background: rgb(var(--color-accent));
+                        background: rgb(var(--P-color-accent));
                         color: transparent;
                     }
                 }
@@ -302,10 +321,10 @@
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    color: rgb(var(--color-accent-fg));
+                    color: rgb(var(--P-color-accent-fg));
 
-                    animation: post-preview-copy-to-clipboard-did-copy-after 1s;
-                    @keyframes post-preview-copy-to-clipboard-did-copy-after {
+                    animation: P-post-preview-copy-to-clipboard-did-copy-after 1s;
+                    @keyframes P-post-preview-copy-to-clipboard-did-copy-after {
                         0% {
                             transform: translate(-50%, -50%) scale(0.01);
                             animation-timing-function: cubic-bezier(0.2, 0.7, 0.6, 1);
@@ -318,7 +337,7 @@
                             transform: translate(-50%, -50%);
                         }
                         90% {
-                            color: rgb(var(--color-accent-fg));
+                            color: rgb(var(--P-color-accent-fg));
                         }
                         100% {
                             color: transparent;
@@ -337,7 +356,7 @@
 
                 li {
                     padding: 0.5em 1em;
-                    border-bottom: 1px solid var(--separator);
+                    border-bottom: 1px solid var(--P-separator);
                 }
             }
             .i-buttons {
@@ -350,126 +369,55 @@
 
     .prose-read-more {
         font-weight: 700;
-        color: rgb(131 37 79);
         font-size: 0.875em;
         line-height: 1.25em;
+        padding-left: 0.75em;
         padding-bottom: 0.75em;
         background: white;
         cursor: pointer;
         display: inline-block;
         text-decoration: inherit;
+        color: rgb(var(--color-foreground));
+        transition: background 1s, color 1s;
 
         &:hover {
             text-decoration: underline;
         }
     }
 
-    &.simulate-userstyles {
-        background: #435;
+    &.dark-theme {
+        background: black;
         color: #fff;
 
-        & > .post-footer {
-            --size-meter-fg: 255 255 255;
+        > .post-header, > .post-footer {
+            --P-cohost-bg: var(--P-cohost-dark-bg);
+            background: #191919;
+        }
+        > .post-footer {
+            background: #191919;
+            --size-meter-fg: 191 186 181;
         }
 
-        & > .post-header .config-preview-item {
+        > .post-header .config-preview-item {
             background: #fff2;
         }
 
-        & > hr {
-            border-color: #fff2;
-        }
+        > .prose-container {
+            --tw-border-opacity: 1;
 
-        & > .p-prose-outer {
-            background: #324;
-
-            & > .p-prose {
-                color: #f2f0f5;
-                --tw-prose-body: #f2f0f5;
-                --tw-prose-headings: #faf5ff;
-                --tw-prose-lead: #e1e0e3;
-                --tw-prose-links: #fff;
-                --tw-prose-bold: #fff;
-                --tw-prose-counters: #a6a0af;
-                --tw-prose-bullets: #969099;
-                --tw-prose-hr: #546;
-                --tw-prose-quotes: #fff;
-                --tw-prose-quote-borders: #546;
-                --tw-prose-code: #fff;
-                --tw-prose-pre-code: #f0f0f5;
-                --tw-prose-pre-bg: #213;
-                --tw-prose-th-borders: #546;
-                --tw-prose-td-borders: #435;
+            > .prose-read-more {
+                background: #000;
+                color: rgb(var(--color-accent));
             }
-
-            & > .prose-read-more {
-                background: inherit;
-                color: color-mix(in lab, rgb(var(--color-accent)), white);
-            }
-        }
-    }
-
-    &.dark-mode {
-        background: #191919;
-        color: #fff;
-        --tw-border-opacity: 1;
-
-        & > .post-footer {
-            --size-meter-fg: 255 255 255;
-        }
-
-        & > .post-header .config-preview-item {
-            background: #020202;
-        }
-
-        & > hr {
-            border-color: #fff2;
-        }
-
-        & > .p-prose-outer {
-            background: #000;
-
-            & > .p-prose {
-                color: rgb(255, 249, 242);
-                --tw-prose-body: #d1d5db;
-                --tw-prose-headings: #fff;
-                --tw-prose-lead: #e1e0e3;
-                --tw-prose-links: #fff;
-                --tw-prose-bold: #fff;
-                --tw-prose-counters: #9ca3af;
-                --tw-prose-bullets: #fff9f2;
-                --tw-prose-hr: #374151;
-                --tw-prose-quotes: #f3f4f6;
-                --tw-prose-quote-borders: #374151;
-                --tw-prose-code: #fff;
-                --tw-prose-pre-code: #d1d5db;
-                --tw-prose-pre-bg: rgb(0 0 0 / 50%);
-                --tw-prose-th-borders: #374151;
-                --tw-prose-td-borders: #4b5563;
-            }
-
-            & > .prose-read-more {
-                background: inherit;
-                color: color-mix(in lab, #000, white);
-            }
-        }
-
-        .post-size-meter {
-            --size-of-max: 0;
-            color: color-mix(
-                in oklab,
-                rgb(rgb(191, 186, 181)),
-                rgb(var(--color-warning)) calc(var(--size-of-max) * 100%)
-            );
         }
     }
 }
 
 .p-prose-outer {
-    .cohost-prose-outer();
+    @include cohost-prose-outer;
 }
 .p-prose-outer .p-prose {
-    .cohost-prose();
+    @include cohost-prose;
 }
 
 .cohost-message-box {
@@ -478,8 +426,8 @@
     margin: 1em;
     padding: 1em;
     border-radius: 0.5em;
-    background: rgb(var(--color-bg));
-    color: rgb(var(--color-fg));
+    background: rgb(var(--P-color-bg));
+    color: rgb(var(--P-color-fg));
     box-shadow: 0 0.5em 1em #0009;
 
     :first-child {
@@ -490,6 +438,6 @@
     }
 
     &[data-level='warning'] {
-        color: var(--error-text);
+        color: var(--P-error-text);
     }
 }

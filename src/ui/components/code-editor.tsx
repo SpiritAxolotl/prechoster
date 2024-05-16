@@ -2,7 +2,7 @@ import React, { createRef, PureComponent } from 'react';
 import CodeMirror from './codemirror';
 import { ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { xcodeLight, xcodeDark } from '@uiw/codemirror-theme-xcode';
-import './code-editor.less';
+import './code-editor.css';
 
 export class CodeEditor extends PureComponent<CodeEditor.Props> {
     themeQuery = window.matchMedia('(prefers-color-scheme: light)');

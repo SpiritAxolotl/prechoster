@@ -1,5 +1,5 @@
 import React, { createRef, PureComponent } from 'react';
-import './split-panel.less';
+import './split-panel.scss';
 
 type ResizerDragState = {
     pointerId: number;

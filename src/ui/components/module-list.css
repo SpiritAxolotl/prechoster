@@ -2,17 +2,17 @@
     display: flex;
 }
 
+/* hide the janky initial layout */
+@keyframes P-module-list-fade-in {
+    0% {
+        opacity: 0;
+    }
+}
+
 .module-list {
     flex: 1;
     position: relative;
-    animation: module-list-fade-in 0.5s 0.3s backwards;
-
-    /* hide the janky initial layout */
-    @keyframes module-list-fade-in {
-        0% {
-            opacity: 0;
-        }
-    }
+    animation: P-module-list-fade-in 0.5s 0.3s backwards;
 
     .add-module {
         padding: 0.75em;
@@ -24,7 +24,7 @@
             margin: 0;
             padding: 0;
             border: none;
-            background: var(--separator);
+            background: var(--P-separator);
             width: 3em;
             height: 3em;
             border-radius: 50%;
@@ -53,7 +53,7 @@
     }
 
     .module-item {
-        background: var(--item-bg);
+        background: var(--P-item-bg);
         border-top: 1px solid rgba(255, 255, 255, 0.2);
         border-bottom: 1px solid rgba(0, 0, 0, 0.3);
         position: absolute;
@@ -62,7 +62,7 @@
         width: 100%;
 
         &.is-selected {
-            background: var(--item-selected-bg);
+            background: var(--P-item-selected-bg);
         }
 
         &.is-being-dragged {
@@ -89,13 +89,13 @@
                     height: 1.5em;
                     border-radius: 0.5em;
                     color: inherit;
-                    border: 1px solid rgb(var(--color-accent));
+                    border: 1px solid rgb(var(--P-color-accent));
                     position: relative;
                     vertical-align: 0.3em;
 
                     &:active {
-                        background: rgb(var(--color-accent));
-                        color: rgb(var(--color-accent-fg));
+                        background: rgb(var(--P-color-accent));
+                        color: rgb(var(--P-color-accent-fg));
                     }
 
                     &::before {
@@ -138,7 +138,7 @@
                             transition: border-color 0.2s;
 
                             &:hover {
-                                border-color: var(--separator);
+                                border-color: var(--P-separator);
                             }
 
                             .i-edit-icon {
@@ -189,8 +189,8 @@
                 button {
                     font: inherit;
                     background: none;
-                    border: 1px solid var(--separator);
-                    color: rgb(var(--color-fg));
+                    border: 1px solid var(--P-separator);
+                    color: rgb(var(--P-color-fg));
                     min-width: 2em;
                     min-height: 2em;
                     transition: opacity 0.3s;
@@ -208,7 +208,7 @@
                     }
 
                     &:active {
-                        color: rgb(var(--color-fg) / 0.5);
+                        color: rgb(var(--P-color-fg) / 0.5);
                         transition: opacity 0.05s;
                     }
                 }
@@ -251,17 +251,17 @@
                         position: absolute;
                         pointer-events: none;
                         border: 0.7em solid transparent;
-                        transition: transform 0.3s var(--ease-default), opacity 0.3s ease-out;
+                        transition: transform 0.3s var(--P-ease-default), opacity 0.3s ease-out;
                         opacity: 0;
                         left: 50%;
                     }
                     &::before {
-                        border-bottom-color: rgb(var(--color-fg));
+                        border-bottom-color: rgb(var(--P-color-fg));
                         bottom: calc(100% + 0.5em);
                         transform: translate(-50%, 0.5em);
                     }
                     &::after {
-                        border-top-color: rgb(var(--color-fg));
+                        border-top-color: rgb(var(--P-color-fg));
                         top: calc(100% + 0.5em);
                         transform: translate(-50%, -0.5em);
                     }
@@ -310,7 +310,7 @@
                 left: 0.5em;
                 right: 0.5em;
                 top: 0;
-                border-top: 1px solid var(--separator);
+                border-top: 1px solid var(--P-separator);
             }
 
             & > .i-sends {

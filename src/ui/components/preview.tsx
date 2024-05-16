@@ -4,7 +4,7 @@ import { CodeEditor } from './code-editor';
 import { javascript } from '@codemirror/lang-javascript';
 import { PostPreview, PreviewConfig, DEFAULT_PREVIEW_CONFIG } from './post-preview';
 import { DataPreview } from './data-preview';
-import './preview.less';
+import './preview.scss';
 
 export function Preview({
     document,

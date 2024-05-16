@@ -1,7 +1,7 @@
 .uikit-form-container {
     .form-item {
         margin: 0.5em 0;
-        background: rgb(var(--color-form-item-bg) / var(--color-form-item-bg-opacity));
+        background: rgb(var(--P-color-form-item-bg) / var(--P-color-form-item-bg-opacity));
         border-radius: 0.5em;
 
         &:first-child {

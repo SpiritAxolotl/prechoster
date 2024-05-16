@@ -12,13 +12,13 @@
 .uikit-button {
     display: inline-flex;
     position: relative;
-    transition: --uikit-button-color 0.3s var(--ease-default),
-        --uikit-button-fg 0.3s var(--ease-default);
+    transition: --uikit-button-color 0.3s var(--P-ease-default),
+        --uikit-button-fg 0.3s var(--P-ease-default);
 
-    --uikit-button-color: rgb(var(--color-accent));
-    --uikit-button-fg: rgb(var(--color-accent-fg));
-    --button-outline: rgb(var(--color-soft-outline) / var(--color-soft-outline-opacity));
-    --button-spin: rgb(var(--color-fg));
+    --uikit-button-color: rgb(var(--P-color-accent));
+    --uikit-button-fg: rgb(var(--P-color-accent-fg));
+    --button-outline: rgb(var(--P-color-soft-outline) / var(--P-color-soft-outline-opacity));
+    --button-spin: rgb(var(--P-color-fg));
 
     .button-inner {
         min-width: inherit;
@@ -30,7 +30,7 @@
         border: 1px solid var(--button-outline);
         font: inherit;
         font-weight: 500;
-        transition: opacity 0.3s var(--ease-default);
+        transition: opacity 0.3s var(--P-ease-default);
         white-space: nowrap;
         -webkit-tap-highlight-color: transparent;
 
@@ -38,8 +38,8 @@
             outline: none;
         }
         &:focus-visible {
-            box-shadow: 0 0 0 0.2em rgb(var(--color-accent) / 0.5);
-            animation: uikit-button-focus-in 0.3s var(--ease-default);
+            box-shadow: 0 0 0 0.2em rgb(var(--P-color-accent) / 0.5);
+            animation: uikit-button-focus-in 0.3s var(--P-ease-default);
         }
 
         &::before {
@@ -53,7 +53,7 @@
             background: #000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s var(--ease-default);
+            transition: opacity 0.3s var(--P-ease-default);
         }
 
         &:active::before {
@@ -74,7 +74,7 @@
         border: 0.2em solid var(--uikit-button-color);
         pointer-events: none;
         opacity: 0;
-        transition: opacity 0.3s var(--ease-default);
+        transition: opacity 0.3s var(--P-ease-default);
     }
 
     .button-loading-spin {
@@ -84,7 +84,7 @@
         right: 0;
         bottom: 0;
         pointer-events: none;
-        transition: opacity 0.2s var(--ease-default);
+        transition: opacity 0.2s var(--P-ease-default);
         opacity: 0;
     }
 
@@ -98,7 +98,7 @@
         border-radius: 100em;
         box-sizing: border-box;
         transform: translate(-50%, -50%);
-        transition: opacity 0.2s var(--ease-default);
+        transition: opacity 0.2s var(--P-ease-default);
     }
 
     &.is-loading {
@@ -108,21 +108,21 @@
     }
 
     &.is-disabled {
-        --uikit-button-fg: rgb(var(--color-accent-fg) / 0.5);
+        --uikit-button-fg: rgb(var(--P-color-accent-fg) / 0.5);
     }
 
     &.is-muted {
-        --uikit-button-color: rgb(var(--color-shade) / var(--color-shade-opacity));
-        --uikit-button-fg: rgb(var(--color-fg));
+        --uikit-button-color: rgb(var(--P-color-shade) / var(--P-color-shade-opacity));
+        --uikit-button-fg: rgb(var(--P-color-fg));
 
         &.is-disabled {
-            --uikit-button-fg: rgb(var(--color-fg) / 0.5);
+            --uikit-button-fg: rgb(var(--P-color-fg) / 0.5);
         }
     }
 
     &.is-danger {
-        --uikit-button-color: rgb(var(--color-danger));
-        --uikit-button-fg: rgb(var(--color-danger-fg));
+        --uikit-button-color: rgb(var(--P-color-danger));
+        --uikit-button-fg: rgb(var(--P-color-danger-fg));
     }
 }
 
@@ -136,6 +136,6 @@
 }
 @keyframes uikit-button-focus-in {
     0% {
-        box-shadow: 0 0 0 1em rgb(var(--color-accent) / 0);
+        box-shadow: 0 0 0 1em rgb(var(--P-color-accent) / 0);
     }
 }

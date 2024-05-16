@@ -1,6 +1,6 @@
 import './sidebar.css';
-import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { DocumentInfo, Storage } from '../storage';
+import { MouseEvent, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { DocumentInfo, nextDocumentId, serialize } from '../storage';
 import { Document } from '../document';
 import { StorageContext } from '../storage-context';
 import { ExamplesMenu } from './examples';
@@ -17,10 +17,12 @@ export function ApplicationSidebar({
     currentFile,
     onOpen,
     onLoad,
+    isMemoryStorage,
 }: {
     currentFile: string | null;
     onOpen: (id: string) => void;
     onLoad: (doc: Document) => void;
+    isMemoryStorage?: boolean;
 }) {
     return (
         <div className="application-sidebar">
@@ -42,7 +44,11 @@ export function ApplicationSidebar({
                 </p>
             </div>
             <div className="i-section i-files">
-                <Files currentFile={currentFile} onOpen={onOpen} />
+                <Files
+                    currentFile={currentFile}
+                    onOpen={onOpen}
+                    isMemoryStorage={isMemoryStorage}
+                />
             </div>
             <div className="i-section i-examples">
                 <ExamplesMenu onLoad={onLoad} />
@@ -101,9 +107,11 @@ function PostName() {
 function Files({
     currentFile,
     onOpen,
+    isMemoryStorage,
 }: {
     currentFile: string | null;
     onOpen: (id: string) => void;
+    isMemoryStorage?: boolean;
 }) {
     const storage = useContext(StorageContext);
     const [fileIds, setFileIds] = useState<string[]>([]);
@@ -165,12 +173,16 @@ function Files({
         <div className="application-files" role="group" aria-label="Local Documents">
             <div className="i-header" role="group" aria-label="Header">
                 <div className="i-title-line">
-                    <h2 className="i-title">Local Documents</h2>
+                    <h2 className="i-title">
+                        {!isMemoryStorage ? 'Local Documents' : 'Documents in Memory'}
+                    </h2>
                     <Button run={() => setEditing(!isEditing)} primary={isEditing}>
                         {isEditing ? 'done' : 'edit'}
                     </Button>
                 </div>
-                <p className="i-description">recent documents stored in your browser!</p>
+                {!isMemoryStorage ? (
+                    <p className="i-description">recent documents stored in your browser!</p>
+                ) : null}
             </div>
             <ul className="i-file-list">
                 {fileIds.map((id) => {
@@ -217,7 +229,6 @@ function FileItem({
     const storage = useContext(StorageContext);
 
     const optHeld = useOptHeld();
-    const [isMouseOver, setMouseOver] = useState(false);
     const [actionsOpen, setActionsOpen] = useState(false);
 
     const [isDeleting, setDeleting] = useState(false);
@@ -240,26 +251,55 @@ function FileItem({
         });
     }, [isDeleting, deleteProgress]);
 
-    const onClick = (e: React.MouseEvent) => {
-        if (e.altKey) {
+    const onClick = () => {
+        if (optHeld) {
             setActionsOpen(true);
         } else {
             onOpen(id);
         }
     };
 
+    const download = () => {
+        storage.getDocument(id).then((document) => {
+            if (!document) return;
+            const format = 'toml';
+
+            const title = document.title || 'Untitled';
+
+            const a = window.document.createElement('a');
+            const file = new File([serialize(document, format)], title, {
+                type: 'application/octet-stream',
+            });
+            const objectURL = (a.href = URL.createObjectURL(file));
+            a.download = `${title}.${format}`;
+            a.click();
+            URL.revokeObjectURL(objectURL);
+        });
+    };
+
     const duplicate = () => {
         storage.getDocument(id).then((document) => {
             if (!document) return;
 
-            storage.saveDocument(Storage.nextDocumentId(), document);
+            storage.saveDocument(nextDocumentId(), document);
         });
+
         setActionsOpen(false);
     };
 
-    const onMouseOver = () => setMouseOver(true);
-    const onMouseOut = () => setMouseOver(false);
-    const button = useRef<HTMLButtonElement>(null);
+    const actionsButton = useRef<HTMLButtonElement>(null);
+    const onActionsClick = (e: MouseEvent) => {
+        e.stopPropagation();
+        setActionsOpen(true);
+    };
+
+    const beginDelete = () => {
+        lastTime.current = Date.now();
+        setDeleting(!isDeleting);
+        setDeleteProgress(0);
+
+        setActionsOpen(false);
+    };
 
     return (
         <li
@@ -267,38 +307,61 @@ function FileItem({
                 'i-item' + (isCurrent ? ' is-selected' : '') + (isDeleting ? ' is-deleting' : '')
             }
         >
-            <button
-                ref={button}
-                className={'i-file' + (actionsOpen ? ' actions-open' : '')}
-                onClick={onClick}
-                onMouseOver={onMouseOver}
-                onMouseOut={onMouseOut}
-            >
-                <FileDetails id={id} cache={cache} version={version} requestLoad={requestLoad} />
-            </button>
+            <div className={'i-file' + (actionsOpen ? ' has-actions-open' : '')} onClick={onClick}>
+                <button className="i-button">
+                    <FileDetails
+                        id={id}
+                        cache={cache}
+                        version={version}
+                        requestLoad={requestLoad}
+                    />
+                </button>
+                {!isEditing ? (
+                    <button
+                        className={'i-actions-button' + (actionsOpen ? ' is-open' : '')}
+                        ref={actionsButton}
+                        onClick={onActionsClick}
+                        aria-label="file options"
+                    >
+                        <svg
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                        >
+                            <g fill="currentColor">
+                                <circle cx="12" cy="7" r="1" />
+                                <circle cx="12" cy="12" r="1" />
+                                <circle cx="12" cy="17" r="1" />
+                            </g>
+                        </svg>
+                    </button>
+                ) : null}
+            </div>
+
             <DirPopover
-                anchor={button.current}
-                open={actionsOpen}
+                anchor={actionsButton.current}
+                open={actionsOpen && !isEditing}
                 onClose={() => setActionsOpen(false)}
+                anchorBias="left"
+                shade={false}
             >
                 <ul className="i-actions">
                     <li>
+                        <button onClick={download}>save</button>
+                    </li>
+                    <li>
                         <button onClick={duplicate}>duplicate</button>
+                    </li>
+                    <li>
+                        <button onClick={beginDelete}>delete</button>
                     </li>
                 </ul>
             </DirPopover>
 
             {isEditing ? (
-                <Button
-                    danger
-                    className="i-delete"
-                    run={() => {
-                        lastTime.current = Date.now();
-                        setDeleting(!isDeleting);
-                        setDeleteProgress(0);
-                    }}
-                    loading={isDeleting}
-                >
+                <Button danger className="i-delete" run={beginDelete} loading={isDeleting}>
                     delete
                 </Button>
             ) : null}
