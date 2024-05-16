@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { initStorage } from './storage';
+import { initStorage, MemoryStorage } from './storage';
 import ApplicationFrame from './ui';
 
 let canInit = true;
@@ -21,7 +21,11 @@ if (canInit) {
             reactRoot.render(<ApplicationFrame storage={storage} />);
         })
         .catch((err) => {
-            alert('Error initializing application storage\n\n' + err);
             console.error(err);
+
+            const storage = new MemoryStorage();
+            reactRoot.render(
+                <ApplicationFrame storage={storage} isMemoryStorage storageError={err} />
+            );
         });
 }

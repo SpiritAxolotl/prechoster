@@ -11,7 +11,7 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { deserialize, serialize, Storage } from '../storage';
+import { deserialize, getExampleDocument, IStorage, nextDocumentId, serialize } from '../storage';
 import { ApplicationSidebar } from './sidebar';
 import './index.css';
 import {
@@ -45,7 +45,15 @@ interface TabState {
 // we assign IDs to virtual documents ahead of time so that we can turn them into real documents later
 const virtualIds = new WeakMap<Document, string>();
 
-export default function ApplicationFrame({ storage }: { storage: Storage }) {
+export default function ApplicationFrame({
+    storage,
+    isMemoryStorage,
+    storageError,
+}: {
+    storage: IStorage;
+    isMemoryStorage?: boolean;
+    storageError?: Error;
+}) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);
     const [openDocs, setOpenDocs] = useState<string[]>([]);
@@ -99,8 +107,7 @@ export default function ApplicationFrame({ storage }: { storage: Storage }) {
     };
 
     const openInitialExample = (id: string) => {
-        storage
-            .getExampleDocument(id)
+        getExampleDocument(id)
             .then(async (doc) => {
                 setVirtualOpenDoc(doc);
             })
@@ -200,7 +207,7 @@ export default function ApplicationFrame({ storage }: { storage: Storage }) {
             : tabStates.get(currentTab!);
 
     if (virtualOpenDoc && !virtualIds.has(virtualOpenDoc)) {
-        virtualIds.set(virtualOpenDoc, Storage.nextDocumentId());
+        virtualIds.set(virtualOpenDoc, nextDocumentId());
     }
 
     // ------------------
@@ -355,6 +362,8 @@ export default function ApplicationFrame({ storage }: { storage: Storage }) {
                             />
                         ) : null}
                     </div>
+
+                    {isMemoryStorage ? <MemoryStorageWarning error={storageError} /> : null}
                 </header>
                 <ContentSplit
                     sidebar={
@@ -368,6 +377,7 @@ export default function ApplicationFrame({ storage }: { storage: Storage }) {
                                 setVirtualOpenDoc(doc);
                                 setCurrentTab(null);
                             }}
+                            isMemoryStorage={isMemoryStorage}
                         />
                     }
                     sidebarOpen={sidebarOpen}
@@ -953,5 +963,42 @@ function NoOpenDocument() {
                 </h3>
             </div>
         </div>
+    );
+}
+
+function MemoryStorageWarning({ error }: { error?: Error }) {
+    const button = useRef<HTMLButtonElement>(null);
+    const [popoverOpen, setPopoverOpen] = useState(false);
+
+    return (
+        <>
+            <button
+                className="i-memory-storage-warning"
+                ref={button}
+                onClick={() => setPopoverOpen(true)}
+            >
+                browser storage unavailable
+            </button>
+            <DirPopover
+                open={popoverOpen}
+                onClose={() => setPopoverOpen(false)}
+                anchor={button.current}
+            >
+                <div className="i-memory-storage-warning-details">
+                    <div className="i-title">IndexedDB Storage could not be initialized</div>
+                    <div className="i-subtitle">
+                        Your open documents will disappear when you close this tab.
+                    </div>
+                    <div className="i-error-title">
+                        Storage initialization failed because of the following error:
+                    </div>
+                    <pre className="i-error">
+                        {error ? error.toString() : '???'}
+                        {'\n'}
+                        {error?.stack}
+                    </pre>
+                </div>
+            </DirPopover>
+        </>
     );
 }

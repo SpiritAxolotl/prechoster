@@ -1,6 +1,6 @@
 import './sidebar.css';
 import { MouseEvent, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { DocumentInfo, serialize, Storage } from '../storage';
+import { DocumentInfo, nextDocumentId, serialize } from '../storage';
 import { Document } from '../document';
 import { StorageContext } from '../storage-context';
 import { ExamplesMenu } from './examples';
@@ -17,10 +17,12 @@ export function ApplicationSidebar({
     currentFile,
     onOpen,
     onLoad,
+    isMemoryStorage,
 }: {
     currentFile: string | null;
     onOpen: (id: string) => void;
     onLoad: (doc: Document) => void;
+    isMemoryStorage?: boolean;
 }) {
     return (
         <div className="application-sidebar">
@@ -42,7 +44,11 @@ export function ApplicationSidebar({
                 </p>
             </div>
             <div className="i-section i-files">
-                <Files currentFile={currentFile} onOpen={onOpen} />
+                <Files
+                    currentFile={currentFile}
+                    onOpen={onOpen}
+                    isMemoryStorage={isMemoryStorage}
+                />
             </div>
             <div className="i-section i-examples">
                 <ExamplesMenu onLoad={onLoad} />
@@ -101,9 +107,11 @@ function PostName() {
 function Files({
     currentFile,
     onOpen,
+    isMemoryStorage,
 }: {
     currentFile: string | null;
     onOpen: (id: string) => void;
+    isMemoryStorage?: boolean;
 }) {
     const storage = useContext(StorageContext);
     const [fileIds, setFileIds] = useState<string[]>([]);
@@ -165,12 +173,16 @@ function Files({
         <div className="application-files" role="group" aria-label="Local Documents">
             <div className="i-header" role="group" aria-label="Header">
                 <div className="i-title-line">
-                    <h2 className="i-title">Local Documents</h2>
+                    <h2 className="i-title">
+                        {!isMemoryStorage ? 'Local Documents' : 'Documents in Memory'}
+                    </h2>
                     <Button run={() => setEditing(!isEditing)} primary={isEditing}>
                         {isEditing ? 'done' : 'edit'}
                     </Button>
                 </div>
-                <p className="i-description">recent documents stored in your browser!</p>
+                {!isMemoryStorage ? (
+                    <p className="i-description">recent documents stored in your browser!</p>
+                ) : null}
             </div>
             <ul className="i-file-list">
                 {fileIds.map((id) => {
@@ -269,7 +281,7 @@ function FileItem({
         storage.getDocument(id).then((document) => {
             if (!document) return;
 
-            storage.saveDocument(Storage.nextDocumentId(), document);
+            storage.saveDocument(nextDocumentId(), document);
         });
 
         setActionsOpen(false);
